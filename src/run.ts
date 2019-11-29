@@ -100,7 +100,7 @@ export async function run() {
 
     coveralls.handleInput(file, (err: string, body: string) => {
       if(err){
-        core.setFailed(err);
+        core.debug(err);
       } else {
         core.setOutput('coveralls-api-result', body);
       }
