@@ -1,4 +1,5 @@
 import * as core from '@actions/core';
+var execSync = require('child_process').execSync;
 
 import fs from 'fs';
 import path from 'path';
@@ -54,6 +55,12 @@ export async function run() {
 
     if (process.env.GITHUB_EVENT_NAME == 'pull_request' || process.env.GITHUB_EVENT_NAME == 'pull_request_target') {
       process.env.CI_PULL_REQUEST = JSON.parse(event).number;
+      try {
+        execSync('git rev-parse --verify ' + process.env.COVERALLS_GIT_COMMIT + "^2");
+        process.env.COVERALLS_GIT_COMMIT += "^2";
+      } catch (error) {
+        core.warning("Can't find the PR head " + process.env.COVERALLS_GIT_COMMIT + "^2 so falling back to " + process.env.COVERALLS_GIT_COMMIT + ".  Maybe increase fetch-depth?  Error: " + error.message);
+      }
     }
 
     const endpoint = core.getInput('coveralls-endpoint');
