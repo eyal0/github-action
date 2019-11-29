@@ -40,6 +40,7 @@ export async function run() {
       const pr = JSON.parse(event).number;
       process.env.CI_PULL_REQUEST = pr;
       jobId = `${sha}-PR-${pr}`;
+      process.env.COVERALLS_GIT_COMMIT += "^2";
     } else {
       jobId = sha;
     }
