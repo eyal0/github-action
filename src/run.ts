@@ -59,6 +59,7 @@ export async function run() {
         try {
           execSync('git rev-parse --verify ' + process.env.COVERALLS_GIT_COMMIT + "^2");
           process.env.COVERALLS_GIT_COMMIT += "^2";
+          core.info("Found the PR head " + process.env.COVERALLS_GIT_COMMIT + "^2 and falling back to " + process.env.COVERALLS_GIT_COMMIT + ".");
         } catch (error) {
           core.warning("Can't find the PR head " + process.env.COVERALLS_GIT_COMMIT + "^2 so falling back to " + process.env.COVERALLS_GIT_COMMIT + ".  Maybe increase fetch-depth?  Error: " + error.message);
         }
